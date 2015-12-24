@@ -15,8 +15,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 def get_version():
-    f = open(os.path.join(HERE, 'confix.py'), 'r')
-    try:
+    with open(os.path.join(HERE, 'confix.py'), 'r') as f:
         for line in f:
             if line.startswith('__version__'):
                 ret = eval(line.strip().split(' = ')[1])
@@ -26,17 +25,11 @@ def get_version():
                 return ret
         else:
             raise ValueError("couldn't find version string")
-    finally:
-        f.close()
 
 
 def get_description():
-    README = os.path.join(HERE, 'README.rst')
-    f = open(README, 'r')
-    try:
+    with open(os.path.join(HERE, 'README.rst'), 'r') as f:
         return f.read()
-    finally:
-        f.close()
 
 
 VERSION = get_version()
@@ -57,9 +50,13 @@ def main():
         keywords=['config', 'yaml', 'toml', 'json', 'ini', 'sensitive',
                   'password'],
         # ...supposed to be installed by user if needed
-        # install_requires=['PyYAML', 'toml']
+        extra_requires=dict(
+            ipaddress='ipaddress',
+            toml='toml',
+            yaml='PyYAML',
+        ),
         classifiers=[
-            'Development Status :: 3 - Alpha',
+            'Development Status :: 4 - Beta',
             'Intended Audience :: Developers',
             'Intended Audience :: System Administrators',
             'License :: OSI Approved :: MIT License',
